@@ -1,19 +1,26 @@
 import styles from '@/styles/Home.module.css';
 import Link from 'next/link';
+interface propsType {
+ title: string;
+ isbn: number;
+ author: string;
+ count?: string;
+ id: string;
+}
 
-const MobileListItem = () => {
+const MobileListItem = (props: propsType) => {
  return (
   <Link
-   href={`/singleBook/1`}
+   href={`/singleBook/${props.id}`}
    className={styles.link}
   >
    <div className={styles.listItemContainer}>
     <div className={styles.titleBox}>
-     <div>Name: Harry Potter</div>
-     <div>ISBN: 54321</div>
+     <div>Name: {props.title}</div>
+     <div>ISBN: {props.isbn}</div>
     </div>
-    <div style={{ marginTop: '3px' }}>By: J.K Rowling</div>
-    <div style={{ marginTop: '3px' }}>No of Copies: 3</div>
+    <div style={{ marginTop: '3px' }}>By: {props.author}</div>
+    <div style={{ marginTop: '3px' }}>No of Copies: {props.count || 'NA'}</div>
    </div>
   </Link>
  );
