@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-export const getBooks = async () => {
- const data = await axios.get('http://localhost:5000/');
+export const getBooks = async (searchText: string) => {
+ const data = await axios.post(`http://localhost:5000/book`, {
+  search: searchText,
+ });
  return data.data;
 };
 

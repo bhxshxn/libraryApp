@@ -63,15 +63,20 @@ var bookSchema = new mongoose.Schema({
 var booksModel = mongoose.model('Books', bookSchema);
 
 
-app.get('/', async (req, res) => {
-	await booksModel.find().then((data) => {
-		res.send(data).status(200);
-	}).catch((err) => { res.send({ msg: err.msg }).status(501); })
+app.post('/book', async (req, res) => {
+	if (req.params.search !== '') {
+		await booksModel.find({ title: { $regex: `.*${req.body.search}.`, $options: "i" } }).then((data) => {
+			res.send(data).status(200);
+		}).catch((err) => { res.send({ msg: err.msg }).status(501); })
+	} else {
+		await booksModel.find().then((data) => {
+			res.send(data).status(200);
+		}).catch((err) => { res.send({ msg: err.msg }).status(501); })
+	}
 });
 
 app.post('/singleBook', async (req, res) => {
 	const { id } = req.body
-	console.log('id', id);
 	await booksModel.find({ _id: id }).then((data) => {
 		res.send(data).status(200);
 	}).catch((err) => { res.send({ msg: err.msg }).status(501); })

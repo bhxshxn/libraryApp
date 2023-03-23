@@ -1,4 +1,5 @@
 import { getSingleBook } from '@/api/singleBook';
+import FullScreenLoader from '@/components/FullScreenLoader';
 import Header from '@/components/Header';
 import styles from '@/styles/Home.module.css';
 import { useRouter } from 'next/router';
@@ -11,7 +12,7 @@ const SingleBook = () => {
  const { isLoading, data: book } = useQuery(['singleBook', id], () =>
   getSingleBook(id)
  );
- if (isLoading) return <div>Loading</div>;
+ if (isLoading) return <FullScreenLoader />;
  return (
   <>
    <Header />
