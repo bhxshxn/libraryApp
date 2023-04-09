@@ -12,6 +12,8 @@ const SingleBook = () => {
  const { isLoading, data: book } = useQuery(['singleBook', id], () =>
   getSingleBook(id)
  );
+ console.log('books', book);
+
  if (isLoading) return <FullScreenLoader />;
  return (
   <>

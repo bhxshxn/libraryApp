@@ -53,7 +53,7 @@ var bookSchema = new mongoose.Schema({
 	vendor: String,
 	billNo: String,
 	year: String,
-	publsiher: String,
+	publisher: String,
 	place: String,
 	pages: Number,
 	subject: String,
@@ -73,6 +73,20 @@ app.post('/book', async (req, res) => {
 			res.send(data).status(200);
 		}).catch((err) => { res.send({ msg: err.msg }).status(501); })
 	}
+});
+
+app.get('/uploadBooksExcel', (req, res) => {
+	excelModel.find((err, data) => {
+		if (err) {
+			console.log(err)
+		} else {
+			if (data != '') {
+				res.render('home', { result: data });
+			} else {
+				res.render('home', { result: {} });
+			}
+		}
+	});
 });
 
 app.post('/singleBook', async (req, res) => {
