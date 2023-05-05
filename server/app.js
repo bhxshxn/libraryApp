@@ -5,7 +5,8 @@ var path = require('path');
 var XLSX = require('xlsx');
 var multer = require('multer');
 var cors = require('cors');
-
+var adminRoute = require('./routes/admin');
+const booksModel = require('./models/books');
 //multer
 var storage = multer.diskStorage({
    destination: function (req, file, cb) {
@@ -40,28 +41,10 @@ app.set('view engine', 'ejs');
 //fetch data from the request
 app.use(express.json());
 app.use(cors());
+
 //static folder path
 app.use(express.static(path.resolve(__dirname, 'public')));
-
-//collection schema
-var bookSchema = new mongoose.Schema({
-   accNo: Number,
-   author: String,
-   title: String,
-   count: Number,
-   price: String,
-   dateOfAcc: String,
-   vendor: String,
-   billNo: String,
-   year: String,
-   publisher: String,
-   place: String,
-   pages: Number,
-   subject: String,
-   semester: String,
-});
-
-var booksModel = mongoose.model('Books', bookSchema);
+app.use('/admin', adminRoute);
 
 app.post('/book', async (req, res) => {
    if (req.params.search !== '') {
@@ -114,31 +97,21 @@ app.post('/singleBook', async (req, res) => {
       });
 });
 
-app.post('/adminLogin', async (req, res) => {
-   const { userId, password } = req.body;
-   if (userId == 'admin' && password == 123456) {
-      res.send({ userId: 'admin' }).status(200);
-   } else {
-      res.send({ msg: 'incorrect id or password' }).status(403);
-   }
-});
-
 app.post('/', upload.single('excel'), (req, res) => {
    var workbook = XLSX.readFile(req.file.path);
    var sheet_namelist = workbook.SheetNames;
    var x = 0;
-   sheet_namelist.forEach(element => {
+   sheet_namelist.forEach(async element => {
       var xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_namelist[x]]);
-      booksModel.insertMany(xlData, (err, data) => {
-         if (err) {
-            console.log(err);
-         } else {
+      await booksModel
+         .insertMany(xlData)
+         .then(data => {
             console.log(data);
-         }
-      });
-      x++;
+         })
+         .catch(err => console.log(err)),
+         x++;
    });
-   res.redirect('/');
+   res.redirect('/uploadBooksExcel');
 });
 
 //assign port
