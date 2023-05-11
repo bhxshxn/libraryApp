@@ -15,9 +15,6 @@ const ProtectedComponent: React.FC<ProtectedComponentProps> = props => {
          setIsAuthorized(false);
       }
    }, [cookies]);
-   useEffect(() => {
-      console.log('Cookies: ', cookies.user);
-   }, [cookies]);
    return <>{isAuthorized ? props.children : <p>not authorized</p>}</>;
 };
 

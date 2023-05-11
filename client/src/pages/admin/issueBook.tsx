@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useRouter } from 'next/router';
 import { issueABook } from '@/api/issueBook';
+import Header from '@/components/Header';
 
 function issueBook() {
    const [issuerName, setIssuerName] = useState('');
@@ -27,7 +28,8 @@ function issueBook() {
    };
    return (
       <ProtectedComponent>
-         <div className='flex flex-col min-h-screen'>
+         <div className='flex flex-col h-[96vh]'>
+            <Header />
             <div className='flex-grow flex justify-center items-center flex-col'>
                <div className='flex flex-col w-[30%] justify-center items-center'>
                   <div className='flex flex-col w-[80%] bg-[#c2fffb] px-12 py-6 justify-center items-center rounded-md'>

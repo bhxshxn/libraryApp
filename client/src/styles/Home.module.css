@@ -116,14 +116,13 @@
 
 .booksTable {
   width: 100%;
-  height: 100vh;
-  display: flex;
+  height: fit-content;
   padding: 50px;
 }
 
 .table {
   border: 2px solid forestgreen;
-  width: 800px;
+  width: 100%;
   height: 200px;
 }
 
@@ -136,4 +135,10 @@
 .td {
   text-align: center;
 
+}
+
+.tableContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
 }

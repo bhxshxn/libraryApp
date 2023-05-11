@@ -8,6 +8,7 @@ import styles from '@/styles/Home.module.css';
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Header from '@/components/Header';
 
 function issues() {
    const router = useRouter();
@@ -40,7 +41,8 @@ function issues() {
    };
    return (
       <ProtectedComponent>
-         <>
+         <div className='min-h-screen'>
+            <Header />
             {isLoading ? (
                <Loader />
             ) : (
@@ -97,7 +99,7 @@ function issues() {
                   </table>
                </div>
             )}
-         </>
+         </div>
       </ProtectedComponent>
    );
 }

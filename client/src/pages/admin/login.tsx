@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import { adminLogin } from '@/api/adminLogn';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
+import Header from '@/components/Header';
 
 function login() {
    const [cookies, setCookie, removeCookie] = useCookies(['user']);
    const router = useRouter();
-
+   const [isAuthorized, setIsAuthorized] = useState<boolean>();
+   useEffect(() => {
+      if (cookies.user == 'admin@123') {
+         setIsAuthorized(true);
+         router.push('/admin/books');
+      } else {
+         setIsAuthorized(false);
+      }
+   }, [cookies]);
+   useEffect(() => {
+      console.log('Cookies: ', cookies.user);
+   }, [cookies]);
    const { mutateAsync } = useMutation(['login'], () =>
       adminLogin({ username: email, password: passw.toString() }),
    );
@@ -20,7 +32,7 @@ function login() {
          .then(res => {
             if (res.token) {
                setCookie('user', res.token);
-               router.push('/admin/issues');
+               router.push('/admin/books');
             }
          })
          .catch(err => {
@@ -29,6 +41,7 @@ function login() {
    };
    return (
       <div className='flex flex-col min-h-screen'>
+         <Header />
          <div className='flex-grow flex justify-center items-center flex-col'>
             <div className='flex flex-col w-[30%] justify-center items-center'>
                <div className='flex flex-col w-[80%] bg-[#c2fffb] px-12 py-6 justify-center items-center rounded-md'>
